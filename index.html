@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#121b25">
+  <meta name="description" content="V2.0 Base PCB 的 60 个元件位号、正反面及物料定位。">
+  <title>V2.0 Base · 元件定位图</title>
+  <style>
+    :root{font-family:Inter,"Microsoft YaHei","PingFang SC",system-ui,sans-serif;color:#182332;background:#f5f7f8;font-synthesis:none}
+    *{box-sizing:border-box}body{margin:0}button,input{font:inherit}button{cursor:pointer}
+    .shell{max-width:1500px;margin:auto;padding:26px clamp(16px,3vw,42px) 42px}
+    .eyebrow{font-size:12px;font-weight:700;letter-spacing:.12em;color:#b04d2d;text-transform:uppercase}
+    header{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:22px}
+    h1{font-size:clamp(28px,3vw,43px);line-height:1.1;letter-spacing:-.035em;margin:7px 0 9px;font-weight:700}
+    .subtitle{margin:0;color:#657180;font-size:14px;line-height:1.6}
+    .summary{display:flex;gap:20px;flex-wrap:wrap;color:#435162;font-size:13px;white-space:nowrap}
+    .summary b{color:#172332;font-size:20px;margin-right:4px}
+    main{display:grid;grid-template-columns:minmax(0,1fr) 326px;gap:18px;align-items:start}
+    .board-panel,.sidebar{background:#fff;border:1px solid #dce2e7;border-radius:14px;box-shadow:0 7px 22px #213a5110;overflow:hidden}
+    .panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-bottom:1px solid #e6ebef}
+    .panel-title{font-size:14px;font-weight:700}.small{font-size:12px;color:#6c7885}
+    .zoom{display:flex;align-items:center;gap:5px}.zoom button{width:30px;height:30px;border:1px solid #d8e0e6;border-radius:7px;background:#fff;color:#243547;font-size:18px;line-height:1}
+    .zoom button:hover,.zoom button:focus-visible{border-color:#314f67;background:#eef4f8}
+    .zoom-output{min-width:43px;text-align:center;font-size:12px;color:#536373;font-variant-numeric:tabular-nums}
+    .map-viewport{overflow:auto;background:#080b0d;max-height:min(78vh,850px)}
+    .map-stage{position:relative;width:100%;aspect-ratio:985/842;min-width:0}
+    .map-stage img,.map-stage svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+    .map-stage svg{overflow:visible}
+    .marker{cursor:pointer;transition:opacity .15s ease}.marker:hover{opacity:1}.marker circle{stroke:#101820;stroke-width:2}
+    .marker.front circle{fill:#9ce7fa}.marker.back circle{fill:#d6b8fc;stroke-dasharray:2 2}
+    .marker.dim{opacity:.18}.marker.selected circle{fill:#ffcc57;stroke:#fff;stroke-width:3}
+    .selection-ring{fill:none;stroke:#ffcc57;stroke-width:5;pointer-events:none}
+    .selection-label{fill:#fff;stroke:#091218;stroke-width:5;paint-order:stroke;font-size:24px;font-weight:700;pointer-events:none}
+    .legend{display:flex;flex-wrap:wrap;gap:14px;padding:10px 16px;color:#536373;font-size:12px;line-height:1.5}
+    .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:baseline;border:1px solid #52606c}.dot.front{background:#9ce7fa}.dot.back{background:#d6b8fc;border-style:dashed}
+    .sidebar{display:flex;flex-direction:column;max-height:min(87vh,965px)}
+    .search-wrap{padding:16px 16px 10px}.search-wrap label{display:block;font-size:12px;font-weight:700;color:#526273;margin-bottom:7px}
+    .search-wrap input{display:block;width:100%;border:1px solid #cad5dd;border-radius:8px;background:#fff;color:#182332;padding:10px 12px;outline:none}
+    .search-wrap input:focus{border-color:#2c6689;box-shadow:0 0 0 3px #2c668925}
+    .filters{display:flex;gap:6px;padding:0 16px 14px}.filters button{border:1px solid #d7dfe5;border-radius:6px;background:#fff;padding:6px 9px;color:#576675;font-size:12px}
+    .filters button[aria-pressed=true]{background:#182b3b;border-color:#182b3b;color:#fff}
+    .selected-detail{padding:16px;border-top:1px solid #e6ebef;border-bottom:1px solid #e6ebef;background:#f8fafb}
+    .selected-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px}.selected-ref{font-size:29px;font-weight:750;letter-spacing:-.04em}.side-tag{font-size:12px;font-weight:700;color:#436072}
+    .selected-value{font-size:15px;font-weight:650;margin-top:5px;overflow-wrap:anywhere}.selected-location{font-size:13px;color:#566777;margin-top:8px}
+    .details{display:grid;grid-template-columns:70px 1fr;gap:7px 8px;margin:14px 0 0;font-size:12px}.details dt{color:#7b8995}.details dd{margin:0;color:#324456;overflow-wrap:anywhere}
+    .flip-note{font-size:12px;color:#885c1a;margin:11px 0 0;line-height:1.5}
+    .list-head{padding:12px 16px 6px;color:#667686;font-size:12px}.parts-list{overflow:auto;padding:0 8px 12px;min-height:150px}
+    .part-row{display:flex;width:100%;align-items:center;justify-content:space-between;gap:8px;text-align:left;border:0;border-radius:8px;background:transparent;padding:8px;color:#213244}
+    .part-row:hover,.part-row:focus-visible{background:#edf4f7}.part-row.active{background:#e4f2f7}
+    .part-row strong{display:inline-block;min-width:57px;font-size:13px}.part-row span{font-size:12px;color:#687888;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}.part-row em{font-style:normal;font-size:11px;color:#788694}
+    .empty{padding:20px 10px;color:#71808d;font-size:13px}
+    footer{margin-top:16px;color:#788592;font-size:12px;line-height:1.5}
+    @media(max-width:980px){main{grid-template-columns:1fr}.sidebar{max-height:none}.parts-list{max-height:360px}.map-viewport{max-height:68vh}header{align-items:flex-start;flex-direction:column;gap:12px}}
+    @media(max-width:560px){.shell{padding-top:18px}.summary{gap:12px}.board-panel,.sidebar{border-radius:10px}.legend{gap:8px}.map-viewport{max-height:55vh}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <div><div class="eyebrow">PCB component map</div><h1>V2.0 Base 元件定位</h1><p class="subtitle">选择位号查看位置、正反面、规格与立创料号。图中 USB-C 接口朝上。</p></div>
+      <div class="summary" aria-label="元件统计"><span><b>60</b> 个元件</span><span><b>50</b> 正面</span><span><b>10</b> 背面</span></div>
+    </header>
+    <main>
+      <section class="board-panel" aria-label="PCB 元件位置图">
+        <div class="panel-head"><div><div class="panel-title">PCB 顶视图</div><div class="small">单击标记或从右侧查找位号</div></div><div class="zoom" aria-label="缩放"><button id="zoom-out" type="button" aria-label="缩小">−</button><span class="zoom-output" id="zoom-output">100%</span><button id="zoom-in" type="button" aria-label="放大">+</button></div></div>
+        <div class="map-viewport" id="map-viewport"><div class="map-stage" id="map-stage"><img src="./pcb.png" alt="V2.0 Base PCB 图，USB-C 接口位于上方" width="985" height="842"><svg id="overlay" viewBox="0 0 985 842" role="img" aria-label="元件位置标记"><g id="markers"></g><circle id="selection-ring" class="selection-ring" r="15"></circle><text id="selection-label" class="selection-label"></text></svg></div></div>
+        <div class="legend"><span><i class="dot front"></i>正面标记</span><span><i class="dot back"></i>背面标记</span><span>背面元件位置按顶视图投影显示</span></div>
+      </section>
+      <aside class="sidebar" aria-label="元件查询">
+        <div class="search-wrap"><label for="search">位号或规格</label><input id="search" type="search" placeholder="例如 U4、NS4168、10kΩ" autocomplete="off"></div>
+        <div class="filters" role="group" aria-label="筛选所在面"><button type="button" data-side="all" aria-pressed="true">全部 60</button><button type="button" data-side="front" aria-pressed="false">正面 50</button><button type="button" data-side="back" aria-pressed="false">背面 10</button></div>
+        <div class="selected-detail" aria-live="polite"><div class="selected-top"><div class="selected-ref" id="selected-ref">U4</div><div class="side-tag" id="selected-side">正面</div></div><div class="selected-value" id="selected-value"></div><div class="selected-location" id="selected-location"></div><dl class="details"><dt>型号</dt><dd id="selected-model"></dd><dt>封装</dt><dd id="selected-footprint"></dd><dt>立创料号</dt><dd id="selected-lcsc"></dd></dl><p class="flip-note" id="flip-note" hidden>此点是从正面看到的背面投影。翻转实物后，左右位置会对调。</p></div>
+        <div class="list-head" id="result-count"></div><div class="parts-list" id="parts-list"></div>
+      </aside>
+    </main>
+    <footer>位置依据与 BOM 位号逐一匹配的本地 PCB 工程。板图用于人工找件，焊接时请以实物焊盘方向为准。</footer>
+  </div>
+  <script>
+  (async function(){
+    const parts = await fetch('./parts.json').then(r => { if(!r.ok) throw new Error('元件数据加载失败'); return r.json(); });
+    const byRef = new Map(parts.map(p => [p.ref, p]));
+    const $ = id => document.getElementById(id);
+    const markers = $('markers'), list = $('parts-list'), viewport = $('map-viewport'), stage = $('map-stage');
+    let selected = 'U4', side = 'all', zoom = 1;
+    const svgNS = 'http://www.w3.org/2000/svg';
+    const markerEls = new Map();
+    const zone = p => (p.py < 315 ? '上' : p.py < 580 ? '中' : '下') + (p.px < 385 ? '左' : p.px < 660 ? '中' : '右');
+    for (const p of parts) {
+      const group = document.createElementNS(svgNS, 'g');
+      group.setAttribute('class', 'marker ' + p.side);
+      group.setAttribute('role', 'button'); group.setAttribute('tabindex', '0');
+      group.setAttribute('aria-label', p.ref + '，' + p.value + '，' + (p.side === 'front' ? '正面' : '背面'));
+      const dot = document.createElementNS(svgNS, 'circle');
+      dot.setAttribute('cx', p.px); dot.setAttribute('cy', p.py); dot.setAttribute('r', '7');
+      const hit = document.createElementNS(svgNS, 'circle');
+      hit.setAttribute('cx', p.px); hit.setAttribute('cy', p.py); hit.setAttribute('r', '15'); hit.setAttribute('fill', 'transparent');
+      group.append(dot, hit); group.addEventListener('click', () => choose(p.ref));
+      group.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); choose(p.ref); } });
+      markers.appendChild(group); markerEls.set(p.ref, group);
+    }
+    function choose(ref){
+      selected = ref; const p = byRef.get(ref); if(!p) return;
+      $('selected-ref').textContent = p.ref;
+      $('selected-side').textContent = p.side === 'front' ? '正面 · 顶层' : '背面 · 底层';
+      $('selected-value').textContent = p.value;
+      $('selected-location').textContent = '板' + zone(p) + '区域 · 图中黄色圆圈处';
+      $('selected-model').textContent = p.model;
+      $('selected-footprint').textContent = p.footprint;
+      $('selected-lcsc').textContent = p.lcsc;
+      $('flip-note').hidden = p.side !== 'back';
+      for(const [name, el] of markerEls) el.classList.toggle('selected', name === ref);
+      $('selection-ring').setAttribute('cx', p.px); $('selection-ring').setAttribute('cy', p.py);
+      const label = $('selection-label'); label.textContent = p.ref;
+      label.setAttribute('x', Math.min(p.px + 19, 875)); label.setAttribute('y', Math.max(p.py - 18, 30));
+      for(const row of list.querySelectorAll('.part-row')) row.classList.toggle('active', row.dataset.ref === ref);
+      const width = stage.clientWidth, height = stage.clientHeight;
+      viewport.scrollTo({left:Math.max(0, p.px / 985 * width - viewport.clientWidth / 2), top:Math.max(0, p.py / 842 * height - viewport.clientHeight / 2), behavior:'smooth'});
+    }
+    function updateList(){
+      const q = $('search').value.trim().toLowerCase();
+      const visible = parts.filter(p => (side === 'all' || p.side === side) && (!q || [p.ref,p.value,p.model,p.lcsc].some(v => v.toLowerCase().includes(q))));
+      list.replaceChildren();
+      for(const p of visible){
+        const row = document.createElement('button'); row.type = 'button'; row.className = 'part-row' + (p.ref === selected ? ' active' : ''); row.dataset.ref = p.ref;
+        const name = document.createElement('strong'); name.textContent = p.ref;
+        const value = document.createElement('span'); value.textContent = p.value;
+        const face = document.createElement('em'); face.textContent = p.side === 'front' ? '正面' : '背面';
+        row.append(name,value,face); row.addEventListener('click',() => choose(p.ref)); list.appendChild(row);
+      }
+      if(!visible.length){ const empty=document.createElement('div');empty.className='empty';empty.textContent='没有找到匹配的元件';list.appendChild(empty); }
+      $('result-count').textContent = '显示 ' + visible.length + ' / 60 个位号';
+      for(const p of parts) markerEls.get(p.ref).classList.toggle('dim', !visible.includes(p));
+    }
+    $('search').addEventListener('input', updateList);
+    document.querySelectorAll('[data-side]').forEach(button => button.addEventListener('click', () => {
+      side = button.dataset.side;
+      document.querySelectorAll('[data-side]').forEach(b => b.setAttribute('aria-pressed', String(b === button)));
+      updateList();
+    }));
+    function setZoom(next){ zoom = Math.min(3,Math.max(1,next)); stage.style.width=(zoom*100)+'%'; $('zoom-output').textContent=Math.round(zoom*100)+'%'; choose(selected); }
+    $('zoom-in').addEventListener('click',() => setZoom(zoom+.5));
+    $('zoom-out').addEventListener('click',() => setZoom(zoom-.5));
+    updateList(); choose(selected);
+  })().catch(error => { document.getElementById('result-count').textContent = error.message; });
+  </script>
+</body>
+</html>
